@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Grade Calculator</title>
+    <style>
+        /* Center the form on the page */
+        form {
+            margin: 0 auto;
+            width: 60%;
+            max-width: 800px;
+        }
+
+        /* Style the form headings */
+        h2 {
+            font-size: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Style the form labels */
+        label {
+            display: inline-block;
+            width: 30%;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Style the form input fields */
+        input[type="number"] {
+            width: 60%;
+            padding: 0.5rem;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        /* Style the form submit button */
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        /* Style the form submit button on hover */
+        input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+
+    </style>
+</head>
+<body>
+<form>
+    <h1>Grade Estimator</h1>
+    <h2>This form only estimates grades using your current averages. THIS IS NOT 100% ACCURATE.</h2>
+    <h2>This form assumes you have gotten a 5/5 on the syllabus quiz.</h2>
+    <h2>If journal marks are not entered this form assumes that you have submitted them and are waiting for a grade and temporarily fills it with a 40/40. If you have not submitted it please enter a 0.</h2>
+    <h2>Discussion Questions</h2>
+    <h1>
+        <div id="total-grade-output"></div>
+    </h1>
+
+    <label for="dq1">DQ1:</label>
+    <input type="number" id="dq1" min="0" max="2" required>
+    <label for="dq2">DQ2:</label>
+    <input type="number" id="dq2" min="0" max="2" required>
+    <label for="dq3">DQ3:</label>
+    <input type="number" id="dq3" min="0" max="2">
+    <label for="dq4">DQ4:</label>
+    <input type="number" id="dq4" min="0" max="2">
+    <label for="dq5">DQ5:</label>
+    <input type="number" id="dq5" min="0" max="2">
+    <label for="dq6">DQ6:</label>
+    <input type="number" id="dq6" min="0" max="2">
+    <label for="dq7">DQ7:</label>
+    <input type="number" id="dq7" min="0" max="2">
+    <label for="dq8">DQ8:</label>
+    <input type="number" id="dq8" min="0" max="2">
+    <label for="dq9">DQ9:</label>
+    <input type="number" id="dq9" min="0" max="2">
+    <label for="dq10">DQ10:</label>
+    <input type="number" id="dq10" min="0" max="2">
+
+    <h2>Quiz</h2>
+    <label for="quiz">Quiz:</label>
+    <input type="number" id="quiz" min="0" max="50" required>
+
+    <h2>Midterm Exam</h2>
+    <label for="midterm">Midterm:</label>
+    <input type="number" id="midterm" min="0" max="100">
+
+    <h2>Final Exam</h2>
+    <label for="final">Final:</label>
+    <input type="number" id="final" min="0" max="150">
+
+    <h2>Journals</h2>
+    <label for="j1">Journal 1:</label>
+    <input type="number" id="j1" min="0" max="40">
+    <label for="j2">Journal 2:</label>
+    <input type="number" id="j2" min="0" max="40">
+
+
+    <h2>Extra Credit</h2>
+    <label for="extra-credit">Extra Credit:</label>
+    <input type="number" id="extra-credit" min="0" max="40">
+
+    <h2>Film Screening</h2>
+
+    <label for="film-screening">Film Screening:</label>
+    <input type="number" id="film-screening" min="0" max="10">
+
+    <input type="submit" value="Calculate Total Grade">
+</form>
+
+
+<script>
+    // JavaScript code to calculate and display the total grade
+    const form = document.querySelector('form');
+    const totalGradeOutput = document.querySelector('#total-grade-output');
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        let quiz = parseInt(document.querySelector('#quiz').value);
+        let midterm = parseInt(document.querySelector('#midterm').value) || null;
+        let final = parseInt(document.querySelector('#final').value) || null;
+        let j1 = parseInt(document.querySelector('#j1').value) || null;
+        let j2 = parseInt(document.querySelector('#j2').value) || null;
+        let dq1 = parseInt(document.querySelector('#dq1').value);
+        let dq2 = parseInt(document.querySelector('#dq2').value);
+        let dq3 = parseInt(document.querySelector('#dq3').value) || null;
+        let dq4 = parseInt(document.querySelector('#dq4').value) || null;
+        let dq5 = parseInt(document.querySelector('#dq5').value) || null;
+        let dq6 = parseInt(document.querySelector('#dq6').value) || null;
+        let dq7 = parseInt(document.querySelector('#dq7').value) || null;
+        let dq8 = parseInt(document.querySelector('#dq8').value) || null;
+        let dq9 = parseInt(document.querySelector('#dq9').value) || null;
+        let dq10 = parseInt(document.querySelector('#dq10').value) || null;
+        let extraCredit = parseInt(document.querySelector('#extra-credit').value) || null;
+        let filmScreening = parseInt(document.querySelector('#film-screening').value) || null;
+
+        let discussionMarks = [dq1, dq2, dq3, dq4, dq5, dq6, dq7, dq8, dq9, dq10];
+        let discussionTotal = 0;
+        let count = 0;
+        let countNull = 0;
+        for (let i = 0; i < discussionMarks.length; i++) {
+            if (discussionMarks[i] === null) {
+                countNull++;
+            } else {
+                discussionTotal += discussionMarks[i];
+                count++;
+            }
+
+        }
+        let discussionAverage;
+        if (count === 0) {
+            discussionAverage = 0;
+        } else {
+            discussionAverage = discussionTotal / count;
+        }
+        discussionTotal = discussionTotal + (countNull * discussionAverage);
+        if (j1 === null) {
+            j1 = 40;
+        }
+        if (j2 === null) {
+            j2 = 40;
+        }
+        if (j1 != null && j2 === null) {
+            j2 = j1;
+        }
+        if (midterm === null) {
+            midterm = quiz*2;
+        }
+        if (final === null) {
+            final = quiz + midterm;
+        }
+        if (extraCredit === null) {
+            extraCredit = 0;
+        }
+        if (filmScreening === null) {
+            filmScreening = 0;
+        }
+        console.log(j1, j2, midterm, final, extraCredit, filmScreening)
+        const total = discussionTotal +
+            quiz + midterm + final + extraCredit + filmScreening + j1 + j2 + 5;
+
+        if (total >= 360) {
+            totalGradeOutput.textContent = `Your total grade is ${total} and your letter grade is A.`;
+        } else if (total >= 320) {
+            let difference = 360 - total;
+            totalGradeOutput.textContent = `Your total grade is ${total} and your letter grade is B and ${difference} points away from an A.`;
+        } else if (total >= 280) {
+            let difference = 320 - total;
+            totalGradeOutput.textContent = `Your total grade is ${total} and your letter grade is C and ${difference} points away from a B.`;
+        } else if (total >= 240) {
+            totalGradeOutput.textContent = `Your total grade is ${total} and your letter grade is D.`;
+        } else {
+            totalGradeOutput.textContent = `Your total grade is ${total} and your letter grade is F.`;
+        }
+    });
+</script>
